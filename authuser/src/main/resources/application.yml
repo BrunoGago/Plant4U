@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   jpa:
@@ -8,17 +8,17 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
+      dialect: org.hibernate.dialect.Oracle12cDialect
 
   jmx:
     enabled: false
   datasource:
-    username: postgres
-    password: T@ider1398
-    url: jdbc:postgresql://localhost:5432/Plant4U-user
+    username: RM94945
+    password: 250599
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
   output:
     ansi:
-      enabled: Always
+      enabled: ALWAYS
 
 logging:
   level:
