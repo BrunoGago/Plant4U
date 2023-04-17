@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -30,6 +31,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
+	private static final Logger logger = Logger.getLogger(UserController.class.getName());
+	
     @Autowired
     UserService userService;
 
@@ -53,7 +56,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Object> deleteUser(@PathVariable(value = "userId")UUID userId){
-
+    	
         log.debug("DELETE deleteUser userId received {}", userId);
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if(!userModelOptional.isPresent()){
@@ -63,7 +66,8 @@ public class UserController {
             userService.delete(userModelOptional.get());
 
             log.debug("DELETE deleteUser userId deleted {}", userId);
-            log.info("User deleted success! userId {}", userId);
+//            log.info("User deleted success! userId {}", userId);
+            logger.info("User deleted success! userId {}" + userId);
             return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");
         }
     }
