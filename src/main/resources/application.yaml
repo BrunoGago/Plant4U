@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.Oracle12cDialect
+
+  jmx:
+    enabled: false
+  datasource:
+    username: RM94945
+    password: 250599
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
+  output:
+    ansi:
+      enabled: ALWAYS
+
+logging:
+  level:
+    com.ead: TRACE
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: INFO
