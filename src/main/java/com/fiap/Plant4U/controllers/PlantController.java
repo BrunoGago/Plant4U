@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.fiap.Plant4U.models.PlantModel;
-import com.fiap.Plant4U.repositories.PlantRepository;
 import com.fiap.Plant4U.services.PlantService;
 
 import lombok.extern.log4j.Log4j2;
@@ -18,7 +17,6 @@ import lombok.extern.log4j.Log4j2;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -80,5 +78,31 @@ public class PlantController {
             }
 
         return ResponseEntity.status(HttpStatus.OK).body(plantModel);
+    }
+
+    @PutMapping("/{plantId}")
+    public ResponseEntity<Object> updatePlant(@PathVariable(value = "plantId") UUID plantId,
+            @RequestBody PlantModel model) {
+
+        log.debug("PUT updatePlant model received {}", model.toString());
+
+        Optional<PlantModel> plant = service.findById(plantId);
+        if (!plant.isEmpty()) {
+            var plantModel = plant.get();
+            plantModel.setName(model.getName());
+            plantModel.setUrlImage(model.getUrlImage());
+            plantModel.setFrequencyWatering(model.getFrequencyWatering());
+            plantModel.setIntervalTime(model.getIntervalTime());
+            plantModel.setNotification(model.isNotification());
+
+            service.updatePlant(plantModel);
+
+            log.debug("PUT updatePlant plantId saved {}", plantModel.getId());
+            log.debug("Plant updated successfully plantId {}", plantModel.getId());
+
+            return ResponseEntity.status(HttpStatus.OK).body(plantModel);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(plantId);
+        }
     }
 }

@@ -28,15 +28,20 @@ public class PlantServiceImpl implements PlantService {
         return repository.findById(plantId);
     }
 
+    @Override
+    public Page<PlantModel> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
     @Transactional
     @Override
     public void deletePlant(PlantModel plantModel) {
         repository.delete(plantModel);
     }
 
+    @Transactional
     @Override
-    public Page<PlantModel> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public PlantModel updatePlant(PlantModel plantModel) {
+        return repository.save(plantModel);
     }
-
 }

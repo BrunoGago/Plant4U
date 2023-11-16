@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.persistence.*;
 
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
 import lombok.AllArgsConstructor;
@@ -23,9 +22,9 @@ public class PlantModel extends RepresentationModel<PlantModel> implements Seria
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
-    private String nome;
-    private String urlImagem;
-    private String frequenciaRega;
-    private int intervaloTempo;
-    private boolean notificacaoRega;
+    private String name;
+    private String urlImage;
+    private String frequencyWatering;
+    private int intervalTime;
+    private boolean notification;
 }

@@ -18,4 +18,6 @@ public interface PlantService {
 
     Page<PlantModel> findAll(Pageable pageable);
 
+    PlantModel updatePlant(PlantModel plantModel);
+
 }
