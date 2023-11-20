@@ -27,7 +27,7 @@ import java.util.UUID;
 public class PlantController {
 
     @Autowired
-    private PlantService service;
+    PlantService service;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPlant(@RequestBody PlantModel plant) {

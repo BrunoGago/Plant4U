@@ -13,19 +13,21 @@ import java.util.stream.Collectors;
 @Log4j2
 public class JwtProvider {
 
-    @Value("${ead.auth.jwtSecret}")
+    @Value("${plant4u.auth.jwtSecret}")
     private String jwtSecret;
-    @Value("${ead.auth.jwtExpirationMs}")
+    @Value("${plant4u.auth.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    public String generateJwt(Authentication authentication){
-        //Como na implementação coloquei o UUID, passei abaixo para que o JWT possa ser construido com o ID
+    public String generateJwt(Authentication authentication) {
+        // Como na implementação coloquei o UUID, passei abaixo para que o JWT possa ser
+        // construido com o ID
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
-        //Extração de Roles e abaixo passamos para o JWT
+        // Extração de Roles e abaixo passamos para o JWT
         final String roles = userPrincipal.getAuthorities().stream()
                 .map(role -> {
-                    return role.getAuthority();}).collect(Collectors.joining(","));
+                    return role.getAuthority();
+                }).collect(Collectors.joining(","));
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUserId().toString()))
@@ -36,12 +38,14 @@ public class JwtProvider {
                 .compact();
     }
 
-    //extrai o username do Jwt, passando a chave "JwtSecret", dentro de body em subject, conforme mostrado acima
+    // extrai o username do Jwt, passando a chave "JwtSecret", dentro de body em
+    // subject, conforme mostrado acima
     public String getSubjectJwt(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    //feita a extração, vamos validar o token, retornando True ou False para a validação
+    // feita a extração, vamos validar o token, retornando True ou False para a
+    // validação
     public boolean validateJwt(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);

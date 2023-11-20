@@ -8,11 +8,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.fiap.Plant4U.models.PlantModel;
 import com.fiap.Plant4U.repositories.PlantRepository;
 import com.fiap.Plant4U.services.PlantService;
 
+@Service
 public class PlantServiceImpl implements PlantService {
 
     @Autowired

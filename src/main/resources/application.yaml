@@ -26,3 +26,8 @@ logging:
     root: INFO
     org.springframework.web: DEBUG
     org.hibernate: INFO
+
+plant4u:
+  auth:
+    jwtSecret: B&E)H+MbQeThWmZq4t7w!z%C*F-JaNcRfUjXn2r5u8x/A?D(G+KbPeSgVkYp3s6v #chave gerada na Key Generator 512-bit
+    jwtExpirationMs: 36000000 #1 hora
