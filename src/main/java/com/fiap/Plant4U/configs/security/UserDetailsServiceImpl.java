@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -24,9 +22,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserDetailsImpl.build(userModel);
     }
 
-    public UserDetails loadUserById(UUID userId) throws AuthenticationCredentialsNotFoundException{
+    public UserDetails loadUserById(Long userId) throws AuthenticationCredentialsNotFoundException {
         UserModel userModel = userRepository.findById(userId)
-                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("User not found with userId: " + userId));
+                .orElseThrow(
+                        () -> new AuthenticationCredentialsNotFoundException("User not found with userId: " + userId));
         return UserDetailsImpl.build(userModel);
     }
 }

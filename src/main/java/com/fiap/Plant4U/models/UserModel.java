@@ -16,20 +16,19 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)//quando os atributos forem transformados para Json, os valores que forem nulos serão ocultados
+@JsonInclude(JsonInclude.Include.NON_NULL) // quando os atributos forem transformados para Json, os valores que forem
+                                           // nulos serão ocultados
 @Entity
 @Table(name = "TB_USERS")
 public class UserModel extends RepresentationModel<UserModel> implements Serializable {
 
-    public static final long serialVersionUID = 1L;
+    public static final Long serialVersionUID = 1L;
 
-    //UUID: Utilizado para um ID unico e universal, alem de ser atemporal, melhora a manutenbilidade, gera em qualquer bd.
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID userId;
+    private Long userId;
 
     @Column(nullable = false, unique = true, length = 50)
     private String username;
@@ -38,18 +37,18 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     private String email;
 
     @Column(nullable = false)
-    @JsonIgnore//como será restrito ao usuário, esse atributo não será enviado na API
+    @JsonIgnore // como será restrito ao usuário, esse atributo não será enviado na API
     private String password;
 
     @Column(nullable = false, length = 150)
     private String fullName;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)//salva como string no bd
+    @Enumerated(EnumType.STRING) // salva como string no bd
     private UserStatus userStatus;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)//salva como string no bd
+    @Enumerated(EnumType.STRING) // salva como string no bd
     private UserType userType;
 
     @Column(length = 20)
@@ -71,12 +70,10 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(    name = "TB_USERS_ROLES",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "TB_USERS_ROLES", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleModel> roles = new HashSet<>();
 
-    public UserEventDto convertToUserEventDto(){
+    public UserEventDto convertToUserEventDto() {
         var userEventDto = new UserEventDto();
         BeanUtils.copyProperties(this, userEventDto);
         userEventDto.setUserType(this.getUserType().toString());

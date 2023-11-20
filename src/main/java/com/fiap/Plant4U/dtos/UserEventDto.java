@@ -2,12 +2,10 @@ package com.fiap.Plant4U.dtos;
 
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 public class UserEventDto {
 
-    private UUID userId;
+    private Long userId;
     private String username;
     private String email;
     private String fullName;

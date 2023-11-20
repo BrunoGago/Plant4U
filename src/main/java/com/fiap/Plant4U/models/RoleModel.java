@@ -8,21 +8,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "TB_ROLES")
-public class RoleModel implements GrantedAuthority, Serializable {
+public class RoleModel implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID roleId;
+    private Long roleId;
     @Enumerated(EnumType.STRING)
-    @Column(name = "role_name",nullable = false, unique = true, length = 30)
+    @Column(name = "role_name", nullable = false, unique = true, length = 30)
     private RoleType roleName;
 
     @Override

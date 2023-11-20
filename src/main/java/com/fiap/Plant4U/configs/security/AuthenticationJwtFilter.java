@@ -1,6 +1,5 @@
 package com.fiap.Plant4U.configs.security;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 
-@Log4j2
 public class AuthenticationJwtFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -26,21 +23,31 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
     UserDetailsServiceImpl userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+            FilterChain filterChain) throws ServletException, IOException {
         try {
-            String jwtStr = getTokenHeader(httpServletRequest);//pega o token do header usando o método declarado abaixo
+            String jwtStr = getTokenHeader(httpServletRequest);// pega o token do header usando o método declarado
+                                                               // abaixo
 
-            //checagem se o token não está nulo ou se ainda está válido
+            // checagem se o token não está nulo ou se ainda está válido
             if (jwtStr != null && jwtProvider.validateJwt(jwtStr)) {
-                String userId = jwtProvider.getSubjectJwt(jwtStr); //extraimos o userId com o método declarado em Jwtprovider
+                String userId = jwtProvider.getSubjectJwt(jwtStr); // extraimos o userId com o método declarado em
+                                                                   // Jwtprovider
 
-                UserDetails userDetails = userDetailsService.loadUserById(UUID.fromString(userId));//vai pegar o userId, bater no BD com o método que criamos e ai transformar para UserDetails com o build()
-                //passa o UserDetails criado para autenticação
+                UserDetails userDetails = userDetailsService.loadUserById(Long.valueOf(userId));// vai pegar o
+                                                                                                // userId, bater no
+                                                                                                // BD com o método
+                                                                                                // que criamos e ai
+                                                                                                // transformar para
+                                                                                                // UserDetails com o
+                                                                                                // build()
+                // passa o UserDetails criado para autenticação
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-                //feito isso, vai setar o Details, passando a request da solicitação
+                // feito isso, vai setar o Details, passando a request da solicitação
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                //passamos a autenticação para que o holder mantenha a autenticação válida para acessar as URIs
+                // passamos a autenticação para que o holder mantenha a autenticação válida para
+                // acessar as URIs
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
@@ -49,7 +56,8 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    //esse método extrai o token do Header da Requisição e passa para o método acima
+    // esse método extrai o token do Header da Requisição e passa para o método
+    // acima
     private String getTokenHeader(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {

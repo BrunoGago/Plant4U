@@ -18,7 +18,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Log4j2
 @RestController
@@ -41,7 +40,7 @@ public class PlantController {
     }
 
     @DeleteMapping("/delete/{plantId}")
-    public ResponseEntity<String> deletePlant(@PathVariable(value = "plantId") UUID plantId) {
+    public ResponseEntity<String> deletePlant(@PathVariable(value = "plantId") Long plantId) {
 
         log.debug("DELETE deletePlant plantId received {}", plantId);
         var plantModel = service.findById(plantId);
@@ -58,7 +57,7 @@ public class PlantController {
     }
 
     @GetMapping("/{plantId}")
-    public ResponseEntity<Object> GetPlantById(@PathVariable(value = "plantId") UUID plantId) {
+    public ResponseEntity<Object> GetPlantById(@PathVariable(value = "plantId") Long plantId) {
         var result = service.findById(plantId);
         if (!result.isEmpty())
             return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -81,7 +80,7 @@ public class PlantController {
     }
 
     @PutMapping("/{plantId}")
-    public ResponseEntity<Object> updatePlant(@PathVariable(value = "plantId") UUID plantId,
+    public ResponseEntity<Object> updatePlant(@PathVariable(value = "plantId") Long plantId,
             @RequestBody PlantModel model) {
 
         log.debug("PUT updatePlant model received {}", model.toString());

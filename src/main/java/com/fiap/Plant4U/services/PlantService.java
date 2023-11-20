@@ -1,7 +1,6 @@
 package com.fiap.Plant4U.services;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,7 @@ public interface PlantService {
 
     PlantModel RegisterPlant(PlantModel plant);
 
-    Optional<PlantModel> findById(UUID plantId);
+    Optional<PlantModel> findById(Long plantId);
 
     void deletePlant(PlantModel plantModel);
 

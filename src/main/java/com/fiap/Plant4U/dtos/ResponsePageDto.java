@@ -11,23 +11,22 @@ import java.util.List;
 
 public class ResponsePageDto<T> extends PageImpl<T> {
 
-    //JsonCreator: utilizado para que o Jackson faça a deserilização do objeto
+    // JsonCreator: utilizado para que o Jackson faça a deserilização do objeto
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public ResponsePageDto(@JsonProperty("content") List<T> content,
-                           @JsonProperty("number") int number,
-                           @JsonProperty("size") int size,
-                           @JsonProperty("totalElements") Long totalElements,
-                           @JsonProperty("pageable") JsonNode pageable,
-                           @JsonProperty("last") boolean last,
-                           @JsonProperty("totalPages") int totalPages,
-                           @JsonProperty("sort") JsonNode sort,
-                           @JsonProperty("first") boolean first,
-                           @JsonProperty("empty") boolean empty
-    ){
+            @JsonProperty("number") int number,
+            @JsonProperty("size") int size,
+            @JsonProperty("totalElements") Long totalElements,
+            @JsonProperty("pageable") JsonNode pageable,
+            @JsonProperty("last") boolean last,
+            @JsonProperty("totalPages") int totalPages,
+            @JsonProperty("sort") JsonNode sort,
+            @JsonProperty("first") boolean first,
+            @JsonProperty("empty") boolean empty) {
         super(content, PageRequest.of(number, size), totalElements);
     }
 
-    public ResponsePageDto(List<T> content, Pageable pageable, long total) {
+    public ResponsePageDto(List<T> content, Pageable pageable, Long total) {
         super(content, pageable, total);
     }
 

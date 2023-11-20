@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,11 +22,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserModel> findAll() {
 
-        return userRepository.findAll(); //método pronto de JpaRepository
+        return userRepository.findAll(); // método pronto de JpaRepository
     }
 
     @Override
-    public Optional<UserModel> findById(UUID userId) {
+    public Optional<UserModel> findById(Long userId) {
 
         return userRepository.findById(userId);
     }
@@ -60,10 +59,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(spec, pageable);
     }
 
-    //Método customizado de Save User para utilizar na mensageria RabbitMQ
+    // Método customizado de Save User para utilizar na mensageria RabbitMQ
     @Transactional
     @Override
-    public UserModel saveUser(UserModel userModel){
+    public UserModel saveUser(UserModel userModel) {
         userModel = save(userModel);
         return userModel;
     }
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserModel updateUser(UserModel userModel) {
-        userModel = save(userModel);//salva o usuario "atualizado"
+        userModel = save(userModel);// salva o usuario "atualizado"
         return userModel;
     }
 

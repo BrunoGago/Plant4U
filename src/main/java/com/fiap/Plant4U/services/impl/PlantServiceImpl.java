@@ -1,7 +1,6 @@
 package com.fiap.Plant4U.services.impl;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -26,7 +25,7 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public Optional<PlantModel> findById(UUID plantId) {
+    public Optional<PlantModel> findById(Long plantId) {
         return repository.findById(plantId);
     }
 

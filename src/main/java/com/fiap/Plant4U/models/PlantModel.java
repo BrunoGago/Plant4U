@@ -1,7 +1,6 @@
 package com.fiap.Plant4U.models;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -20,7 +19,7 @@ public class PlantModel extends RepresentationModel<PlantModel> implements Seria
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     private String name;
     private String urlImage;

@@ -10,16 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
-
 
 //o UserDetails foi implementado a parte do UserModel para evitar uma sobrecarga de responsabilidade na classe
 @Data
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
-    private UUID userId;
+    private Long userId;
     private String fullName;
     private String username;
     @JsonIgnore
@@ -27,11 +25,14 @@ public class UserDetailsImpl implements UserDetails {
     private String email;
     private Collection<? extends GrantedAuthority> authorities;
 
-    //Esse método vai transformar o UserModel (que tem as informações salvas no BD) para UserDetailsImpl (que é um padrão do Spring Security)
-    public static UserDetailsImpl build(UserModel userModel){
+    // Esse método vai transformar o UserModel (que tem as informações salvas no BD)
+    // para UserDetailsImpl (que é um padrão do Spring Security)
+    public static UserDetailsImpl build(UserModel userModel) {
         /*
-         * Role implementa o GrantedAuth, então a lista vai ter as Roles autorizadas nela
-         * O abaixo vai percorrer cada Role de User e vai verificar se está autorizado, como na lista recebida
+         * Role implementa o GrantedAuth, então a lista vai ter as Roles autorizadas
+         * nela
+         * O abaixo vai percorrer cada Role de User e vai verificar se está autorizado,
+         * como na lista recebida
          */
         List<GrantedAuthority> authorities = userModel.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
@@ -46,8 +47,7 @@ public class UserDetailsImpl implements UserDetails {
                 userModel.getUsername(),
                 userModel.getPassword(),
                 userModel.getEmail(),
-                authorities
-        );
+                authorities);
     }
 
     @Override
@@ -85,4 +85,3 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 }
-

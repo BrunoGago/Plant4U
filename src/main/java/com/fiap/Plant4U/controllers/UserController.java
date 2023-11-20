@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -64,10 +63,10 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/{userId}")
-    public ResponseEntity<Object> getOneUser(@PathVariable(value = "userId") UUID userId) {
+    public ResponseEntity<Object> getOneUser(@PathVariable(value = "userId") Long userId) {
 
-        UUID currentUserId = authenticationCurrentUserService.getCurrentUser().getUserId();
-        if (currentUserId.equals(userId)) {
+        Long currentUserId = authenticationCurrentUserService.getCurrentUser().getUserId();
+        if (currentUserId == userId) {
             Optional<UserModel> userModelOptional = userService.findById(userId);
             if (!userModelOptional.isPresent()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
@@ -80,7 +79,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable(value = "userId") UUID userId) {
+    public ResponseEntity<Object> deleteUser(@PathVariable(value = "userId") Long userId) {
 
         log.debug("DELETE deleteUser userId received {}", userId);
         Optional<UserModel> userModelOptional = userService.findById(userId);
@@ -96,7 +95,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Object> updateUser(@PathVariable(value = "userId") UUID userId,
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "userId") Long userId,
             @RequestBody @Validated(UserDto.UserView.UserPut.class) @JsonView(UserDto.UserView.UserPut.class) UserDto userDto) {
 
         log.debug("PUT updateUser userDto received {}", userDto.toString());
@@ -120,7 +119,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/password")
-    public ResponseEntity<Object> updatePassword(@PathVariable(value = "userId") UUID userId,
+    public ResponseEntity<Object> updatePassword(@PathVariable(value = "userId") Long userId,
             @RequestBody @Validated(UserDto.UserView.PasswordPut.class) @JsonView(UserDto.UserView.PasswordPut.class) UserDto userDto) {
 
         log.debug("PUT updatePassword userDto received {}", userDto.toString());
@@ -145,7 +144,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/image")
-    public ResponseEntity<Object> updateImage(@PathVariable(value = "userId") UUID userId,
+    public ResponseEntity<Object> updateImage(@PathVariable(value = "userId") Long userId,
             @RequestBody @Validated(UserDto.UserView.ImagePut.class) @JsonView(UserDto.UserView.ImagePut.class) UserDto userDto) {
 
         log.debug("PUT updateImage userDto received {}", userDto.toString());

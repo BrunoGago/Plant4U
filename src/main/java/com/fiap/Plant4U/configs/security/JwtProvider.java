@@ -19,7 +19,7 @@ public class JwtProvider {
     private int jwtExpirationMs;
 
     public String generateJwt(Authentication authentication) {
-        // Como na implementação coloquei o UUID, passei abaixo para que o JWT possa ser
+        // Como na implementação coloquei o Long, passei abaixo para que o JWT possa ser
         // construido com o ID
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
