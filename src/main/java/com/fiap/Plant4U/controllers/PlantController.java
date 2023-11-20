@@ -45,7 +45,7 @@ public class PlantController {
         log.debug("DELETE deletePlant plantId received {}", plantId);
         var plantModel = service.findById(plantId);
 
-        if (!plantModel.isEmpty()) {
+        if (plantModel.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Plant not exist!");
         } else {
             service.deletePlant(plantModel.get());
