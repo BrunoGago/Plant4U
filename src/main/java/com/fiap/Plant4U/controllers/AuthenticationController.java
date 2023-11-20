@@ -43,9 +43,6 @@ public class AuthenticationController {
     RoleService roleService;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
     JwtProvider jwtProvider;
 
     @Autowired
@@ -73,7 +70,7 @@ public class AuthenticationController {
         RoleModel roleModel = roleService.findByRoleName(RoleType.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is Not Found."));
 
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));//Esse método recebe a senha que foi enviada "Request Body" e encripta ela
+        userDto.setPassword(userDto.getPassword());
 
         var userModel = new UserModel();
         BeanUtils.copyProperties(userDto, userModel); //O BeanUtil transforma um objeto para outro
