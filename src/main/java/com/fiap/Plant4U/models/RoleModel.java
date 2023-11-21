@@ -20,6 +20,7 @@ public class RoleModel implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ROLE")
     @SequenceGenerator(name = "SEQ_ROLE", sequenceName = "ROLE_SEQ", allocationSize = 1)
     private Long roleId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role_name", nullable = false, unique = true, length = 30)
     private RoleType roleName;
