@@ -27,7 +27,8 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     public static final Long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER")
+    @SequenceGenerator(name = "SEQ_USER", sequenceName = "USER_SEQ", allocationSize = 1)
     private Long userId;
 
     @Column(nullable = false, unique = true, length = 50)

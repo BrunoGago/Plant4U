@@ -18,7 +18,8 @@ import lombok.NoArgsConstructor;
 public class PlantModel extends RepresentationModel<PlantModel> implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PLANT")
+    @SequenceGenerator(name = "SEQ_PLANT", sequenceName = "PLANT_SEQ", allocationSize = 1)
     private Long id;
 
     private String name;
