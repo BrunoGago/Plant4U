@@ -14,28 +14,17 @@ import javax.validation.constraints.Size;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
-    public interface UserView {
-        public static interface RegistrationPost {}
-        public static interface UserPut {}
-        public static interface PasswordPut {}
-    }
-
-    @NotBlank(groups = UserView.RegistrationPost.class)
-    @Email(groups = UserView.RegistrationPost.class)
-    @JsonView(UserView.RegistrationPost.class)
+    @NotBlank()
     private String email;
 
-    @NotBlank(groups = {UserView.RegistrationPost.class, UserView.PasswordPut.class})
-    @Size(min = 6, max = 20, groups = {UserView.RegistrationPost.class, UserView.PasswordPut.class})
-    @JsonView({UserView.RegistrationPost.class, UserView.PasswordPut.class})
+    @NotBlank()
+    @Size(min = 6, max = 20)
     private String password;
 
-    @NotBlank(groups = UserView.PasswordPut.class)
-    @Size(min = 6, max = 20, groups = UserView.PasswordPut.class)
-    @JsonView({UserView.PasswordPut.class})
+    @NotBlank()
+    @Size(min = 6, max = 20)
     private String oldPassword;
 
-    @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
     private String fullName;
 
 }

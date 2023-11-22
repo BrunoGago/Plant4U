@@ -1,6 +1,5 @@
 package com.fiap.Plant4U.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fiap.Plant4U.dtos.LoginDto;
 import com.fiap.Plant4U.dtos.UserDto;
 import com.fiap.Plant4U.enums.UserStatus;
@@ -12,13 +11,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -30,13 +27,12 @@ public class AuthenticationController {
     UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(@RequestBody
-                                               @Validated(UserDto.UserView.RegistrationPost.class)
-                                               @JsonView(UserDto.UserView.RegistrationPost.class) UserDto userDto){
+    public ResponseEntity<Object> registerUser(
+            @RequestBody UserDto userDto) {
 
         log.debug("POST registerUser userDto received {}", userDto.toString());
 
-        if(userService.existsByEmail(userDto.getEmail())){
+        if (userService.existsByEmail(userDto.getEmail())) {
 
             log.warn("Error: Email {} is already taken!", userDto.getEmail());
 
@@ -60,21 +56,21 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
     }
 
-    @PostMapping("/login/{userId}") //ALTERAR na Repository (criar uma chamada pro banco para validar email e senha)
-    public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginDto loginDto, @PathVariable(value = "userId") Long userId) {
+    @PostMapping("/login") // ALTERAR na Repository (criar uma chamada pro banco para validar email e
+                           // senha)
+    public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
 
-        var userModel = new UserModel();
         Boolean userModelBoolean = userService.existsByEmail(loginDto.getEmail());
-        if (userModelBoolean == false) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
-        } else if (userModel.getPassword().equals(loginDto.getPassword()) &&
-                userModelBoolean.get().getEmail().equals(loginDto.getEmail())) {
-            return ResponseEntity.status(HttpStatus.OK).body("Login bem sucedido");
-        }
-        else {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("senha e/ou email errados!");
-        }
-        return null;
-    }
 
+        var user = userService.findByEmail(loginDto.getEmail());
+
+        if (userModelBoolean == false)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
+
+        if (!user.get().getPassword().equals(loginDto.getPassword()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("senha e/ou email errados!");
+
+        return ResponseEntity.status(HttpStatus.OK).body("Login bem sucedido");
+
+    }
 }

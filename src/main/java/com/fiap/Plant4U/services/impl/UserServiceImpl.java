@@ -3,6 +3,8 @@ package com.fiap.Plant4U.services.impl;
 import com.fiap.Plant4U.models.UserModel;
 import com.fiap.Plant4U.repositories.UserRepository;
 import com.fiap.Plant4U.services.UserService;
+
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public Boolean existsByEmail(String email) {
 
         return userRepository.existsByEmail(email);
     }
@@ -79,9 +81,8 @@ public class UserServiceImpl implements UserService {
         return save(userModel);
     }
 
-
     @Override
-    Optional<UserModel> findByEmail(String email){
+    public Optional<UserModel> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 }
