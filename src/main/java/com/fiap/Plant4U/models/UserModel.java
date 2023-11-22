@@ -3,23 +3,17 @@ package com.fiap.Plant4U.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fiap.Plant4U.dtos.UserEventDto;
 import com.fiap.Plant4U.enums.UserStatus;
 import com.fiap.Plant4U.enums.UserType;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL) // quando os atributos forem transformados para Json, os valores que forem
-                                           // nulos serão ocultados
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "TB_USERS")
 public class UserModel extends RepresentationModel<UserModel> implements Serializable {
@@ -32,34 +26,22 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     private Long userId;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String username;
-
-    @Column(nullable = false, unique = true, length = 50)
     private String email;
 
     @Column(nullable = false)
-    @JsonIgnore // como será restrito ao usuário, esse atributo não será enviado na API
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false, length = 150)
     private String fullName;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING) // salva como string no bd
+    @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING) // salva como string no bd
+    @Enumerated(EnumType.STRING)
     private UserType userType;
-
-    @Column(length = 20)
-    private String phoneNumber;
-
-    @Column(nullable = false, length = 14)
-    private String cpf;
-
-    @Column
-    private String imageUrl;
 
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -68,18 +50,5 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime lastUpdateDate;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TB_USERS_ROLES", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleModel> roles = new HashSet<>();
-
-    public UserEventDto convertToUserEventDto() {
-        var userEventDto = new UserEventDto();
-        BeanUtils.copyProperties(this, userEventDto);
-        userEventDto.setUserType(this.getUserType().toString());
-        userEventDto.setUserStatus(this.getUserStatus().toString());
-        return userEventDto;
-    }
 
 }

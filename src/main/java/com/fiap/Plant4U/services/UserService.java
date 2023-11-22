@@ -24,8 +24,6 @@ public interface UserService {
 
     UserModel save(UserModel userModel);
 
-    boolean existsByUsername(String username);
-
     boolean existsByEmail(String email);
 
     Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable);
@@ -37,4 +35,6 @@ public interface UserService {
     UserModel updateUser(UserModel userModel);
 
     UserModel updatePassword(UserModel userModel);
+
+    Optional<UserModel> findByEmail(String email);
 }

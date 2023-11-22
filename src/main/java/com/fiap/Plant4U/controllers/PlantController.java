@@ -1,5 +1,6 @@
 package com.fiap.Plant4U.controllers;
 
+import com.fiap.Plant4U.specifications.SpecificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,8 @@ import lombok.extern.log4j.Log4j2;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Log4j2
@@ -32,8 +35,8 @@ public class PlantController {
     public ResponseEntity<String> registerPlant(@RequestBody PlantModel plant) {
 
         try {
-            service.RegisterPlant(plant);
-            return ResponseEntity.status(HttpStatus.OK).body("Registered plant!");
+            service.registerPlant(plant);
+            return ResponseEntity.status(HttpStatus.OK).body("Planta registrada com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -46,37 +49,23 @@ public class PlantController {
         var plantModel = service.findById(plantId);
 
         if (plantModel.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Plant not exist!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planta não cadastrada!");
         } else {
             service.deletePlant(plantModel.get());
 
             log.debug("DELETE deletePlant plantId deleted {}", plantModel);
             log.info("Plant deleted sucess! plantId: {}", plantId);
-            return ResponseEntity.status(HttpStatus.OK).body("Plant deleted sucessfully!");
+            return ResponseEntity.status(HttpStatus.OK).body("Planta deletada com sucesso!");
         }
     }
 
     @GetMapping("/{plantId}")
-    public ResponseEntity<Object> GetPlantById(@PathVariable(value = "plantId") Long plantId) {
+    public ResponseEntity<Object> getPlantById(@PathVariable(value = "plantId") Long plantId) {
         var result = service.findById(plantId);
         if (!result.isEmpty())
             return ResponseEntity.status(HttpStatus.OK).body(result);
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Plant not found!");
-    }
-
-    @GetMapping("/listPlants")
-    public ResponseEntity<Page<PlantModel>> ListPlants(
-            @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable) {
-
-        Page<PlantModel> plantModel = service.findAll(pageable);
-
-        if (!plantModel.isEmpty())
-            for (PlantModel plant : plantModel.toList()) {
-                plant.add(linkTo(methodOn(PlantController.class).GetPlantById(plant.getId())).withSelfRel());
-            }
-
-        return ResponseEntity.status(HttpStatus.OK).body(plantModel);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planta não cadastrada!");
     }
 
     @PutMapping("/{plantId}")
@@ -104,4 +93,25 @@ public class PlantController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(plantId);
         }
     }
+
+    @PostMapping("/registerWatering/{plantId}") //correção: colocar a relação do usuário para a planta, pois senao a rega será para todos os usuários
+    public ResponseEntity<String> registerLastWatering(@PathVariable(value = "plantId") Long plantId) {
+
+        Optional<PlantModel> plant = service.findById(plantId);
+        if (!plant.isEmpty()) {
+            var plantModel = plant.get();
+            plantModel.setLastWatering(LocalDateTime.now(ZoneId.of("UTC")));
+
+            service.updatePlant(plantModel);
+
+            log.debug("PUT updatePlant plantId saved {}", plantModel.getId());
+            log.debug("Plant updated successfully plantId {}", plantModel.getId());
+
+            return ResponseEntity.status(HttpStatus.OK).body("Última rega atualizada com sucesso!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro na atualização da última rega!");
+        }
+    }
+
+    //CRIAR ENDPOINT: Criar um endpoint que vai trazer as plantas que são de um determinado usuário
 }

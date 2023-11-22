@@ -14,20 +14,11 @@ import javax.validation.constraints.Size;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
-    //Interfaces responsáveis por habilitar o JsonView de cada varíavel do DTO
-
     public interface UserView {
         public static interface RegistrationPost {}
         public static interface UserPut {}
         public static interface PasswordPut {}
-        public static interface ImagePut {}
     }
-
-    @NotBlank(groups = UserView.RegistrationPost.class)
-    @Size(min = 4, max = 50, groups = UserView.RegistrationPost.class)
-    @UsernameConstraint(groups = UserView.RegistrationPost.class)
-    @JsonView(UserView.RegistrationPost.class)
-    private String username;
 
     @NotBlank(groups = UserView.RegistrationPost.class)
     @Email(groups = UserView.RegistrationPost.class)
@@ -47,14 +38,4 @@ public class UserDto {
     @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
     private String fullName;
 
-    @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
-    private String phoneNumber;
-
-    @CPF(groups = {UserView.RegistrationPost.class, UserView.UserPut.class})
-    @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
-    private String cpf;
-
-    @NotBlank(groups = UserView.ImagePut.class)
-    @JsonView({UserView.ImagePut.class})
-    private String imageUrl;
 }

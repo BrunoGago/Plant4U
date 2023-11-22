@@ -13,8 +13,8 @@ spring:
   jmx:
     enabled: false
   datasource:
-    username: RM94945
-    password: 250599
+    username: RM93790
+    password: 290897
     url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
   output:
     ansi:

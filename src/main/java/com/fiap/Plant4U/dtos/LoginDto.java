@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class LoginDto {
 
     @NotNull
-    private String username;
+    private String email;
     @NotNull
     private String password;
 }
