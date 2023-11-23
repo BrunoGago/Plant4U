@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -29,7 +28,7 @@ public class PlantModel extends RepresentationModel<PlantModel> implements Seria
     private String name;
     private String urlImage;
     private String frequencyWatering;
-    private int intervalTime;
+    private String intervalTime;
     private boolean notification;
 
     @Column(nullable = false)
@@ -37,6 +36,5 @@ public class PlantModel extends RepresentationModel<PlantModel> implements Seria
     private LocalDateTime lastWatering;
 
     @Column(nullable = false)
-    @JsonIgnore
     private Long userId;
 }
