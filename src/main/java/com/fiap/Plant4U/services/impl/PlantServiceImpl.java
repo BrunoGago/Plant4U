@@ -1,16 +1,11 @@
 package com.fiap.Plant4U.services.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.fiap.Plant4U.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.fiap.Plant4U.models.PlantModel;
@@ -22,6 +17,7 @@ public class PlantServiceImpl implements PlantService {
 
     @Autowired
     PlantRepository repository;
+
     @Override
     public PlantModel registerPlant(PlantModel plant) {
         return repository.save(plant);
@@ -42,6 +38,11 @@ public class PlantServiceImpl implements PlantService {
     @Override
     public PlantModel updatePlant(PlantModel plantModel) {
         return repository.save(plantModel);
+    }
+
+    @Override
+    public List<PlantModel> ListById(Long idUser) {
+        return repository.ListById(idUser);
     }
 
 }

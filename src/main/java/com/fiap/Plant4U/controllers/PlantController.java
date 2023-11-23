@@ -31,10 +31,12 @@ public class PlantController {
     @Autowired
     PlantService service;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerPlant(@RequestBody PlantModel plant) {
+    @PostMapping("/register/{idUser}")
+    public ResponseEntity<String> registerPlant(@RequestBody PlantModel plant,
+            @PathVariable(value = "idUser") Long idUser) {
 
         try {
+            plant.setId(idUser);
             service.registerPlant(plant);
             return ResponseEntity.status(HttpStatus.OK).body("Planta registrada com sucesso!");
         } catch (Exception e) {
@@ -62,6 +64,17 @@ public class PlantController {
     @GetMapping("/{plantId}")
     public ResponseEntity<Object> getPlantById(@PathVariable(value = "plantId") Long plantId) {
         var result = service.findById(plantId);
+
+        if (!result.isEmpty())
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planta não cadastrada!");
+    }
+
+    @GetMapping("/listPlants/{idUser}")
+    public ResponseEntity<Object> getAllPlants(@PathVariable(value = "idUser") Long idUser) {
+        var result = service.ListById(idUser);
+
         if (!result.isEmpty())
             return ResponseEntity.status(HttpStatus.OK).body(result);
         else
@@ -94,7 +107,8 @@ public class PlantController {
         }
     }
 
-    @PostMapping("/registerWatering/{plantId}") //correção: colocar a relação do usuário para a planta, pois senao a rega será para todos os usuários
+    @PostMapping("/registerWatering/{plantId}") // correção: colocar a relação do usuário para a planta, pois senao a
+                                                // rega será para todos os usuários
     public ResponseEntity<String> registerLastWatering(@PathVariable(value = "plantId") Long plantId) {
 
         Optional<PlantModel> plant = service.findById(plantId);
@@ -113,5 +127,6 @@ public class PlantController {
         }
     }
 
-    //CRIAR ENDPOINT: Criar um endpoint que vai trazer as plantas que são de um determinado usuário
+    // CRIAR ENDPOINT: Criar um endpoint que vai trazer as plantas que são de um
+    // determinado usuário
 }
