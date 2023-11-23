@@ -31,10 +31,8 @@ public class PlantModel extends RepresentationModel<PlantModel> implements Seria
     private String intervalTime;
     private boolean notification;
 
-    @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime lastWatering;
 
-    @Column(nullable = false)
     private Long userId;
 }
