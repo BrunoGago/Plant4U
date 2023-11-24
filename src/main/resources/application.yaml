@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.Oracle12cDialect
+
+  jmx:
+    enabled: false
+  datasource:
+    username: RM92959
+    password: 131198
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
+  output:
+    ansi:
+      enabled: ALWAYS
+
+logging:
+  level:
+    com.ead: TRACE
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: INFO
+
+plant4u:
+  auth:
+    jwtSecret: B&E)H+MbQeThWmZq4t7w!z%C*F-JaNcRfUjXn2r5u8x/A?D(G+KbPeSgVkYp3s6v #chave gerada na Key Generator 512-bit
+    jwtExpirationMs: 36000000 #1 hora
