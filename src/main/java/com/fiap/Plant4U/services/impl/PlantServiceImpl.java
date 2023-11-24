@@ -41,8 +41,20 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public List<PlantModel> ListById(Long idUser) {
-        return repository.ListById(idUser);
+    public List<PlantModel> listById(Long userId) {
+        return repository.listPlantByUserId(userId);
+    }
+
+    @Override
+    public List<PlantModel> findAll() {
+
+        return repository.findAll();
+    }
+
+    @Override
+    public Optional<PlantModel> findPlantByUser(Long idUser, Long idPlant) {
+
+        return repository.listPlantById(idUser, idPlant);
     }
 
 }

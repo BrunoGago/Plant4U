@@ -23,7 +23,7 @@ public class PlantModel extends RepresentationModel<PlantModel> implements Seria
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PLANT")
     @SequenceGenerator(name = "SEQ_PLANT", sequenceName = "PLANT_SEQ", allocationSize = 1)
-    private Long id;
+    private Long plantId;
 
     private String name;
     private String urlImage;

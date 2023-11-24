@@ -42,7 +42,7 @@ public class UserController {
 
     @PutMapping("/{userId}/password")
     public ResponseEntity<Object> updatePassword(@PathVariable(value = "userId") Long userId,
-            @RequestBody @Validated(UserDto.UserView.PasswordPut.class) @JsonView(UserDto.UserView.PasswordPut.class) UserDto userDto) {
+            @RequestBody UserDto userDto) {
 
         log.debug("PUT updatePassword userDto received {}", userDto.toString());
 

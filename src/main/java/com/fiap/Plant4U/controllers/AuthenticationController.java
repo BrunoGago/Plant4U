@@ -13,9 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -56,21 +56,20 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
     }
 
-    @PostMapping("/login") // ALTERAR na Repository (criar uma chamada pro banco para validar email e
-                           // senha)
-    public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
+    @PostMapping("/login")
+    public ResponseEntity<Object> authenticateUser(@RequestBody LoginDto loginDto) {
 
         Boolean userModelBoolean = userService.existsByEmail(loginDto.getEmail());
 
-        var user = userService.findByEmail(loginDto.getEmail());
+        Optional<UserModel> userModelOptional = userService.findByEmail(loginDto.getEmail());
 
         if (userModelBoolean == false)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
 
-        if (!user.get().getPassword().equals(loginDto.getPassword()))
+        if (!userModelOptional.get().getPassword().equals(loginDto.getPassword()))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("senha e/ou email errados!");
 
-        return ResponseEntity.status(HttpStatus.OK).body("Login bem sucedido");
+        return ResponseEntity.status(HttpStatus.OK).body(userModelOptional);
 
     }
 }

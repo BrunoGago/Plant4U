@@ -13,6 +13,5 @@ public interface UserRepository extends JpaRepository<UserModel, Long>, JpaSpeci
 
     Optional<UserModel> findById(Long userId);
 
-    @Query(value = "SELECT * FROM tb_users tbu WHERE tbu.email= :email", nativeQuery = true)
-    Optional<UserModel> findByEmail(@Param("email") String email);
+    Optional<UserModel> findByEmail(String email);
 }

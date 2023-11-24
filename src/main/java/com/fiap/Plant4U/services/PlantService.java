@@ -15,6 +15,10 @@ public interface PlantService {
 
     PlantModel updatePlant(PlantModel plantModel);
 
-    List<PlantModel> ListById(Long idUser);
+    List<PlantModel> listById(Long userId);
+
+    Optional<PlantModel> findPlantByUser(Long idUser, Long idPlant);
+
+    List<PlantModel> findAll();
 
 }
